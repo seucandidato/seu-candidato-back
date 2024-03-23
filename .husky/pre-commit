@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm test
+npm run lint
+
+printf "\n"
+printf "\n${GREEN}                      _      _   ${NC}"
+printf "\n${GREEN}                     | |    | |  ${NC}"
+printf "\n${GREEN}   _ __   _   _  ___ | |__  | |  ${NC}"
+printf "\n${GREEN}  | '_ \ | | | |/ __|| '_ \ | |  ${NC}"
+printf "\n${GREEN}  | |_) || |_| |\__ \| | | ||_|  ${NC}"
+printf "\n${GREEN}  | .__/  \__,_||___/|_| |_|(_)  ${NC}"
+printf "\n${GREEN}  | |                            ${NC}"
+printf "\n${GREEN}  |_|                            ${NC}"
+printf "\n\n"
