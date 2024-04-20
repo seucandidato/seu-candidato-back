@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { DataException } from 'src/services/exceptions/data.exception';
+import { DataException } from '../../services/exceptions/data.exception';
 
 @Injectable()
 export class UserService {
@@ -13,11 +13,6 @@ export class UserService {
     private userRepository: Repository<UserEntity>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const findOneByUsername = await this.findOneByUsername(createUserDto.username);
-    const findOneByEmail = await this.findOneByEmail(createUserDto.email);
-    if (!findOneByEmail) {
-      throw new DataException('Email não cadastrado !');
-    }
     createUserDto.createdAt = new Date(Date.now());
     createUserDto.updatedAt = new Date(Date.now());
     const data = await this.userRepository.save({...createUserDto});
