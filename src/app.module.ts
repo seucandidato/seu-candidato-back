@@ -7,7 +7,11 @@ import ORMConfig from 'ormconfig';
 import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(ORMConfig), AuthorizationModule],
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot(ORMConfig),
+    AuthorizationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

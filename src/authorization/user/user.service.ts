@@ -15,7 +15,7 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     createUserDto.createdAt = new Date(Date.now());
     createUserDto.updatedAt = new Date(Date.now());
-    const data = await this.userRepository.save({...createUserDto});
+    const data = await this.userRepository.save({ ...createUserDto });
     return data;
   }
 
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   async findOneByUsername(username: string) {
-    const data = await this.userRepository.findOne({where: {username}});
+    const data = await this.userRepository.findOne({ where: { username } });
     if (!data) {
       throw new DataException('Sem usuário cadastrado !');
     }
@@ -36,7 +36,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    const data = await this.userRepository.findOne({where: {email}});
+    const data = await this.userRepository.findOne({ where: { email } });
     if (!data) {
       throw new DataException('Sem usuário cadastrado !');
     }
@@ -44,12 +44,8 @@ export class UserService {
   }
 
   async update(email: string, updateUserDto: UpdateUserDto) {
-    const findOne = await this.findOneByEmail(email);
-    if (!findOne) {
-      throw new DataException('Email não cadastrado !');
-    }
-      updateUserDto.updatedAt = new Date(Date.now());
-      const data = await this.userRepository.update({email}, updateUserDto);
+    updateUserDto.updatedAt = new Date(Date.now());
+    const data = await this.userRepository.update({ email }, updateUserDto);
     return data;
   }
 
@@ -58,6 +54,6 @@ export class UserService {
     if (!findOne) {
       throw new DataException('Email não cadastrado !');
     }
-    return this.userRepository.delete({email});
+    return this.userRepository.delete({ email });
   }
 }

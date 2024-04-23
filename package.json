@@ -69,10 +69,21 @@
     "typescript": "^5.1.3"
   },
   "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 28,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
+    ],
+    "modulePaths": [
+      "<rootDir>"
     ],
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
@@ -81,6 +92,11 @@
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "main.ts",
+      ".module.ts",
+      "src/migrations"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

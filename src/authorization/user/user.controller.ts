@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -10,11 +18,11 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    try{
+    try {
       const data = await this.userService.create(createUserDto);
       return {
         message: 'Usuário criado com sucesso !',
-        data
+        data,
       };
     } catch (error: any) {
       throw new DataException(error.message);
@@ -49,12 +57,15 @@ export class UserController {
   }
 
   @Patch(':email')
-  async update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
-    try{
+  async update(
+    @Param('email') email: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    try {
       const data = await this.userService.update(email, updateUserDto);
       return {
         message: 'Usuário atualizado com sucesso !',
-        data
+        data,
       };
     } catch (error: any) {
       throw new DataException(error.message);
@@ -63,12 +74,12 @@ export class UserController {
 
   @Delete(':email')
   async remove(@Param('email') email: string) {
-    try{
+    try {
       const data = await this.userService.remove(email);
       return {
         message: 'Usuário deletado com sucesso !',
-        data
-      }
+        data,
+      };
     } catch (error: any) {
       throw new DataException(error.message);
     }
