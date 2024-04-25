@@ -11,15 +11,32 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { DataException } from '../../services/exceptions/data.exception';
+import { MailerService } from '../../mailer/mailer.service';
+import { sendMailInterface } from '../../services/interfaces/sendMail.interface';
+import * as CryptoJS from 'crypto-js';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailerService: MailerService,
+  ) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       const data = await this.userService.create(createUserDto);
+      const content = `
+      Email enviado automaticamente \n
+      Para confirmar seu email por favor clique no link abaixo. \n
+      ${process.env['URL_FRONT']}user/confirmEmail/${data.hash}
+      `;
+      const bodyMailer: sendMailInterface = {
+        to: data.email,
+        subject: 'Confirmação de email - SeuCandidato.com',
+        content,
+      };
+      this.mailerService.sendMail(bodyMailer);
       return {
         message: 'Usuário criado com sucesso !',
         data,
@@ -51,6 +68,15 @@ export class UserController {
   findOneByUsername(@Param('username') username: string) {
     try {
       return this.userService.findOneByUsername(username);
+    } catch (error: any) {
+      throw new DataException(error.message);
+    }
+  }
+
+  @Get('confirmEmail/:hash')
+  confirmEmail(@Param('hash') hash: string) {
+    try {
+      return this.userService.confirmEmail(hash);
     } catch (error: any) {
       throw new DataException(error.message);
     }

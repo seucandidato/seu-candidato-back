@@ -1,8 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
-import { config } from 'dotenv'
-import { join } from 'path'
+import { config } from 'dotenv';
+import { join } from 'path';
 
-config()
+config();
 
 const ORMConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -12,11 +12,11 @@ const ORMConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD || '12345678',
   database: process.env.DB_NAME || 'seucandidato',
   synchronize: false,
-  logging: true,
+  logging: ['error', 'warn', 'log'],
   migrationsRun: true,
   autoLoadEntities: true,
   entities: [join(__dirname, 'src', '**', '*.entity.{ts,js}')],
-  migrations: [join(__dirname, 'migrations', '*.{ts,js}')]
-}
+  migrations: [join(__dirname, 'migrations', '*.{ts,js}')],
+};
 
-export default ORMConfig
+export default ORMConfig;

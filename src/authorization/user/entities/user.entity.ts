@@ -19,6 +19,12 @@ export class UserEntity {
   @Column()
   phone: string;
 
+  @Column({ default: false })
+  active?: boolean;
+
+  @Column()
+  hash?: string;
+
   @Column()
   password: string;
 

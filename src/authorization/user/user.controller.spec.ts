@@ -6,6 +6,8 @@ import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
+import { MailerService } from '../../mailer/mailer.service';
+import { fakeMailer } from '../../services/mock/fakeMailer';
 
 const user: UserEntity = {
   name: 'Clarck Kent',
@@ -34,7 +36,10 @@ describe('UserController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [...TypeORMSqliteTestingModule()],
       controllers: [UserController],
-      providers: [UserService],
+      providers: [
+        UserService,
+        { provide: MailerService, useValue: fakeMailer },
+      ],
     }).compile();
 
     app = module.createNestApplication();
@@ -53,6 +58,8 @@ describe('UserController', () => {
       email: 'clarckkent@seucandidato.com',
       phone: '8299097663',
       password: '123456',
+      active: true,
+      hash: 'f66ad3a6c0aa6dd372608e0d12a9ae51',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
     });
@@ -65,10 +72,12 @@ describe('UserController', () => {
       email: 'lex@seucandidato.com',
       phone: '8299097664',
       password: '1234567',
+      active: true,
+      hash: 'f66ad3a6c0aa6dd372608e0d12a9ae51',
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
     });
-  }; // modo de uso await createUser(); inserir a info no início do teste.
+  };
 
   it('should be defined', () => {
     expect(controller).toBeDefined();

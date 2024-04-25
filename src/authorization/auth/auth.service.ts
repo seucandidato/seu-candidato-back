@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { AuthException } from '../../services/exceptions/auth.exception';
 import { JwtService } from '@nestjs/jwt';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
     pass: string,
   ): Promise<{ access_token: string }> {
     const user = await this.userService.findOneByUsername(username);
-    if (user?.password !== pass) {
+    if (user?.password !== CryptoJS.MD5(pass).toString()) {
       throw new AuthException(
         'Erro de autenticação - Username/Email ou Password incorreto(s)!',
       );
