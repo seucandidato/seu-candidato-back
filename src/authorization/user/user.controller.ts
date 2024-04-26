@@ -13,7 +13,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { DataException } from '../../services/exceptions/data.exception';
 import { MailerService } from '../../mailer/mailer.service';
 import { sendMailInterface } from '../../services/interfaces/sendMail.interface';
-import * as CryptoJS from 'crypto-js';
 
 @Controller('user')
 export class UserController {

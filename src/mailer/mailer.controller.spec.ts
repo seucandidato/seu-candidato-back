@@ -2,14 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MailerController } from './mailer.controller';
 import { MailerService } from './mailer.service';
 import * as request from 'supertest';
-import { sendMailInterface } from '../services/interfaces/sendMail.interface';
 import { INestApplication } from '@nestjs/common';
-
-const body: sendMailInterface = {
-  to: 'teste@teste.com',
-  subject: 'Teste subject',
-  content: 'Teste content',
-};
 
 describe('MailerController', () => {
   let app: INestApplication;
