@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import ORMConfig from 'ormconfig';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { MailerModule } from './mailer/mailer.module';
+import { CmsModule } from './cms/cms.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { MailerModule } from './mailer/mailer.module';
     TypeOrmModule.forRoot(ORMConfig),
     AuthorizationModule,
     MailerModule,
+    CmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
