@@ -1,24 +1,17 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, Param, UseGuards, Get } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
-import { UpdateContactDto } from './dto/update-contact.dto';
 import { DataException } from '../../services/exceptions/data.exception';
 import { CreateContactResponseDto } from './dto/create-contact-response.dto';
 import { ContactEntity } from './entities/contact.entity';
+import { AuthGuard } from '../../authorization/auth/auth.guard';
 
 @Controller('contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(@Body() createContactDto: CreateContactDto) {
     try {
       const data = await this.contactService.create(createContactDto);
@@ -50,23 +43,21 @@ export class ContactController {
     }
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.contactService.findAll();
-  // }
+  @Get()
+  findAll() {
+    try {
+      return this.contactService.findAll();
+    } catch (error: any) {
+      throw new DataException(error.message);
+    }
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.contactService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
-  //   return this.contactService.update(+id, updateContactDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.contactService.remove(+id);
-  // }
+  @Get('findResponse/:id')
+  findResponse(@Param('id') id: number) {
+    try {
+      return this.contactService.findResponseContact(id);
+    } catch (error: any) {
+      throw new DataException(error.message);
+    }
+  }
 }

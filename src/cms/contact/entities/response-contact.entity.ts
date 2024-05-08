@@ -1,4 +1,4 @@
-import { ContactEntity } from 'src/cms/contact/entities/contact.entity';
+import { ContactEntity } from '../../../cms/contact/entities/contact.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('response_contact')

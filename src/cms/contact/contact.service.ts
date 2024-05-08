@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
-import { UpdateContactDto } from './dto/update-contact.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContactEntity } from './entities/contact.entity';
 import { Repository } from 'typeorm';
@@ -36,19 +35,12 @@ export class ContactService {
     return data;
   }
 
-  // findAll() {
-  //   return `This action returns all contact`;
-  // }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} contact`;
-  // }
-
-  // update(id: number, updateContactDto: UpdateContactDto) {
-  //   return `This action updates a #${id} contact`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} contact`;
-  // }
+  async findAll() {
+    return await this.contactRepository.find();
+  }
+  async findResponseContact(id: number) {
+    return await this.responseContactRepository.query(
+      `SELECT * FROM response_contact where contactId=${id}`,
+    );
+  }
 }
