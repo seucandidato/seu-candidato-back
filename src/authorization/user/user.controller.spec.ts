@@ -15,6 +15,7 @@ const user: UserEntity = {
   email: 'clarck@seucandidato.com',
   phone: '8299097663',
   password: '123456',
+  profile: 1,
 };
 
 const user2: UserEntity = {
@@ -23,6 +24,7 @@ const user2: UserEntity = {
   email: 'lex@seucandidato.com',
   phone: '8299097664',
   password: '1234567',
+  profile: 2,
 };
 
 describe('UserController', () => {
@@ -58,6 +60,7 @@ describe('UserController', () => {
       email: 'clarckkent@seucandidato.com',
       phone: '8299097663',
       password: '123456',
+      profile: 1,
       active: true,
       hash: 'f66ad3a6c0aa6dd372608e0d12a9ae51',
       createdAt: new Date(Date.now()),
@@ -72,6 +75,7 @@ describe('UserController', () => {
       email: 'lex@seucandidato.com',
       phone: '8299097664',
       password: '1234567',
+      profile: 1,
       active: true,
       hash: 'f66ad3a6c0aa6dd372608e0d12a9ae51',
       createdAt: new Date(Date.now()),
