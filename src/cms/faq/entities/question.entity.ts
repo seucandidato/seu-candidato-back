@@ -6,10 +6,10 @@ export class FaqEntity {
   id?: number;
 
   @Column()
-  title: string;
+  question: string;
 
   @Column()
-  description: string;
+  response: string;
 
   @Column()
   createdAt?: Date;

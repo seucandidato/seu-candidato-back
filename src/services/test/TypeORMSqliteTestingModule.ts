@@ -1,5 +1,6 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../../authorization/user/entities/user.entity';
+import { FaqEntity } from '../../cms/faq/entities/question.entity';
 
 export const TypeORMSqliteTestingModule = () => [
   TypeOrmModule.forRoot({
@@ -9,7 +10,7 @@ export const TypeORMSqliteTestingModule = () => [
     synchronize: true,
     migrationsRun: true,
     keepConnectionAlive: true,
-    entities: [UserEntity],
+    entities: [UserEntity, FaqEntity],
   }),
-  TypeOrmModule.forFeature([UserEntity]),
+  TypeOrmModule.forFeature([UserEntity, FaqEntity]),
 ];
