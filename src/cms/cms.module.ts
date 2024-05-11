@@ -9,6 +9,12 @@ import { UserEntity } from '../authorization/user/entities/user.entity';
 @Module({
   controllers: [ContactController],
   providers: [ContactService],
-  imports: [TypeOrmModule.forFeature([ContactEntity, ResponseContactEntity, UserEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      ContactEntity,
+      ResponseContactEntity,
+      UserEntity,
+    ]),
+  ],
 })
 export class CmsModule {}
