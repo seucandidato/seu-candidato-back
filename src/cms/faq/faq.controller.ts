@@ -18,7 +18,7 @@ import { AuthGuard } from '../../authorization/auth/auth.guard';
 export class FaqController {
   constructor(private readonly faqService: FaqService) {}
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createQuestionDto: CreateQuestionDto) {
     try {

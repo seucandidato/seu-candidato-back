@@ -43,10 +43,7 @@ export class FaqService {
   }
 
   async remove(id: number) {
-    const question = await this.findOneById(id);
-    if (!question) {
-      throw new DataException('Pergunta não cadastrada!');
-    }
+    await this.findOneById(id);
     return this.faqRepository.delete({ id });
   }
 }
