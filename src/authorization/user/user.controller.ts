@@ -25,15 +25,14 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto) {
     try {
       const data = await this.userService.create(createUserDto);
-      const content = `
-      Email enviado automaticamente \n
-      Para confirmar seu email por favor clique no link abaixo. \n
-      ${process.env['URL_FRONT']}user/confirmEmail/${data.hash}
-      `;
       const bodyMailer: sendMailInterface = {
         to: data.email,
         subject: 'Confirmação de email - SeuCandidato.com',
-        content,
+        content: `
+        Email enviado automaticamente \n
+        Para confirmar seu email por favor clique no link abaixo. \n
+        ${process.env['URL_FRONT']}user/confirmEmail/${data.hash}
+        `,
       };
       this.mailerService.sendMail(bodyMailer);
       return {
