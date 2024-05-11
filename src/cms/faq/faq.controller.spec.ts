@@ -17,7 +17,6 @@ const question: FaqEntity = {
 describe('FaqController', () => {
   let app: INestApplication;
   let controller: FaqController;
-  let service: FaqService;
   let faqRepository: Repository<FaqEntity>;
 
   const createQuestion = async () => {
@@ -40,7 +39,6 @@ describe('FaqController', () => {
     await app.init();
 
     controller = module.get<FaqController>(FaqController);
-    service = module.get<FaqService>(FaqService);
     faqRepository = module.get('FaqEntityRepository');
   });
 
@@ -112,7 +110,6 @@ describe('FaqController', () => {
     await request(app.getHttpServer())
       .get('/faq/3')
       .then((response) => {
-        console.log(response);
         expect(response.statusCode).toBe(200);
         expect(response.body[0].question).toBe('How to susbcribe');
         expect(response.body[0].response).toBe('Just subscribe');
