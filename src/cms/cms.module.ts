@@ -4,10 +4,15 @@ import { ContactController } from './contact/contact.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContactEntity } from './contact/entities/contact.entity';
 import { ResponseContactEntity } from './contact/entities/response-contact.entity';
+import { FaqController } from './faq/faq.controller';
+import { FaqService } from './faq/faq.service';
+import { FaqEntity } from './faq/entities/question.entity';
 
 @Module({
-  controllers: [ContactController],
-  providers: [ContactService],
-  imports: [TypeOrmModule.forFeature([ContactEntity, ResponseContactEntity])],
+  controllers: [ContactController, FaqController],
+  providers: [ContactService, FaqService],
+  imports: [
+    TypeOrmModule.forFeature([ContactEntity, ResponseContactEntity, FaqEntity]),
+  ],
 })
 export class CmsModule {}

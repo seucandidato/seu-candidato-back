@@ -195,5 +195,4 @@ describe('ContactController', () => {
 
     spy.mockRestore();
   });
-
 });

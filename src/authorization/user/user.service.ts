@@ -13,6 +13,7 @@ export class UserService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
+
   async create(createUserDto: CreateUserDto) {
     createUserDto.createdAt = new Date(Date.now());
     createUserDto.updatedAt = new Date(Date.now());
