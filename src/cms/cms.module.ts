@@ -8,14 +8,20 @@ import { FaqController } from './faq/faq.controller';
 import { FaqService } from './faq/faq.service';
 import { FaqEntity } from './faq/entities/question.entity';
 import { UserEntity } from '../authorization/user/entities/user.entity';
+import { PlansController } from './plans/plans.controller';
+import { PlansService } from './plans/plans.service';
+import { PlanEntity } from './plans/entities/plan.entity';
+import { BenefitEntity } from './plans/entities/benefits.entity';
 
 @Module({
-  controllers: [ContactController, FaqController],
-  providers: [ContactService, FaqService],
+  controllers: [ContactController, FaqController, PlansController],
+  providers: [ContactService, FaqService, PlansService],
   imports: [
     TypeOrmModule.forFeature([
       ContactEntity,
       ResponseContactEntity,
+      PlanEntity,
+      BenefitEntity,
       FaqEntity,
       UserEntity,
     ]),
