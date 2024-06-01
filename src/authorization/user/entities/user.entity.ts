@@ -29,6 +29,9 @@ export class UserEntity {
   @Column({ default: false })
   active?: boolean;
 
+  @Column({ default: false })
+  checked?: boolean;
+
   @Column()
   hash?: string;
 

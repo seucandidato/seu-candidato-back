@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,6 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { DataException } from '../../services/exceptions/data.exception';
 import { MailerService } from '../../mailer/mailer.service';
 import { sendMailInterface } from '../../services/interfaces/sendMail.interface';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -44,6 +46,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     try {
@@ -53,6 +56,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get('findOneByEmail/:email')
   findOneByEmail(@Param('email') email: string) {
     try {
@@ -62,6 +66,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get('findOneByUsername/:username')
   findOneByUsername(@Param('username') username: string) {
     try {
@@ -80,6 +85,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':email')
   async update(
     @Param('email') email: string,
@@ -96,6 +102,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':email')
   async remove(@Param('email') email: string) {
     try {

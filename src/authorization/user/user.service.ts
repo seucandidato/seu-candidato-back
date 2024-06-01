@@ -19,12 +19,13 @@ export class UserService {
     createUserDto.updatedAt = new Date(Date.now());
     createUserDto.password = CryptoJS.MD5(createUserDto.password).toString();
     createUserDto.hash = CryptoJS.MD5(createUserDto.email).toString();
+    createUserDto.active = true;
     const data = await this.userRepository.save({ ...createUserDto });
     return data;
   }
 
   async findAll() {
-    const data = await this.userRepository.find();
+    const data = await this.userRepository.find({ where: { active: true } });
     if (data.length === 0) {
       throw new DataException('Sem usuários cadastrados !');
     }
@@ -36,6 +37,7 @@ export class UserService {
       .createQueryBuilder('user')
       .where('user.username = :data', { data })
       .orWhere('user.email = :data', { data })
+      .orWhere('user.active = ' + true)
       .getOne();
 
     if (!response) {
@@ -45,7 +47,12 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    const data = await this.userRepository.findOne({ where: { email } });
+    const data = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .orWhere('user.active = ' + true)
+      .getOne();
+
     if (!data) {
       throw new DataException('Sem usuário cadastrado !');
     }
@@ -56,8 +63,8 @@ export class UserService {
     const data: UpdateUserDto = await this.userRepository.findOne({
       where: { hash },
     });
-    if (!data.active) {
-      data.active = true;
+    if (!data.checked) {
+      data.checked = true;
       this.userRepository.save({ ...data });
     }
     return 'Email confirmado !';
@@ -70,10 +77,13 @@ export class UserService {
   }
 
   async remove(email: string) {
-    const findOne = await this.findOneByEmail(email);
-    if (!findOne) {
+    const user = await this.findOneByEmail(email);
+    if (!user) {
       throw new DataException('Email não cadastrado !');
     }
-    return this.userRepository.delete({ email });
+
+    user.active = false;
+
+    return this.userRepository.save({ ...user });
   }
 }
