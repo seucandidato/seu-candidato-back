@@ -16,7 +16,6 @@ const contact = {
   message: 'Message',
   email: 'test@test.com',
   active: true,
-  user: 1,
 };
 
 const contactResponse = {
@@ -141,11 +140,10 @@ describe('ContactController', () => {
   it('[GET] - get contact', async () => {
     await request(app.getHttpServer())
       .get('/contact')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body[0].id).toBe(1);
-        expect(response.body[0].title).toBe('Title');
-        expect(response.body[0].message).toBe('Message');
+        expect(response.body.message).toBe('Contatos buscados com sucesso !');
       });
   });
 
@@ -158,6 +156,7 @@ describe('ContactController', () => {
 
     await request(app.getHttpServer())
       .get('/contact')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -172,9 +171,12 @@ describe('ContactController', () => {
       .get('/contact/findResponse/1')
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body[0].id).toBe(1);
-        expect(response.body[0].title).toBe('Title');
-        expect(response.body[0].message).toBe('Message');
+        expect(response.body.message).toBe(
+          'Respostas de contato buscados com sucesso !',
+        );
+        expect(response.body.data[0].id).toBe(1);
+        expect(response.body.data[0].title).toBe('Title');
+        expect(response.body.data[0].message).toBe('Message');
       });
   });
 

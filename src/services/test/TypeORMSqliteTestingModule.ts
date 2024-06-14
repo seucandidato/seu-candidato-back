@@ -12,13 +12,7 @@ export const TypeORMSqliteTestingModule = () => [
     synchronize: true,
     migrationsRun: true,
     keepConnectionAlive: true,
-    entities: [
-      UserEntity,
-      ContactEntity,
-      ResponseContactEntity,
-      UserEntity,
-      FaqEntity,
-    ],
+    entities: [UserEntity, ContactEntity, ResponseContactEntity, FaqEntity],
   }),
   TypeOrmModule.forFeature([
     UserEntity,
