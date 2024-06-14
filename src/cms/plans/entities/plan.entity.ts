@@ -10,7 +10,7 @@ import { BenefitEntity } from './benefits.entity';
 @Entity('plans')
 export class PlanEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   title: string;

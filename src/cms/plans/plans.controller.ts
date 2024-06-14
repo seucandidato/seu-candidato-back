@@ -19,7 +19,7 @@ import { AuthGuard } from '../../authorization/auth/auth.guard';
 export class PlansController {
   constructor(private readonly plansService: PlansService) {}
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() createPlanDto: CreatePlanDto) {
     try {
@@ -33,24 +33,25 @@ export class PlansController {
     }
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('benefits')
   async createBenefit(@Body() createBenefitDto: CreateBenefitDto) {
     try {
       const data = await this.plansService.createBenefit(createBenefitDto);
       return {
-        message: 'Benefício criado com sucesso !',
+        message: 'Benefício criado com sucesso!',
         data,
       };
     } catch (error: any) {
       throw new DataException(error.message);
     }
   }
+  
 
   @Get()
-  findAll() {
+  async findAll() {
     try {
-      const data = this.plansService.findAll();
+      const data = await this.plansService.findAll();
       return {
         message: 'Planos retornados com sucesso !',
         data,
@@ -61,9 +62,9 @@ export class PlansController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      const data = this.plansService.findOne(+id);
+      const data = await this.plansService.findOne(+id);
       return {
         message: 'Plano retornado com sucesso !',
         data,
@@ -73,7 +74,7 @@ export class PlansController {
     }
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updatePlanDto: UpdatePlanDto) {
     try {
@@ -87,7 +88,7 @@ export class PlansController {
     }
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {

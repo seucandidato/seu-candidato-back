@@ -8,6 +8,10 @@ import {
 import { CreateBenefitDto } from '../benefit/create-benefit.dto';
 
 export class CreatePlanDto {
+  @IsNumber()
+  @IsOptional()
+  id?: number;
+
   @IsString()
   title: string;
 
