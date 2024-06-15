@@ -33,17 +33,16 @@ export class UserService {
   }
 
   async findOneByUsername(data: string) {
-    const response = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.username = :data', { data })
-      .orWhere('user.email = :data', { data })
-      .orWhere('user.active = ' + true)
-      .getOne();
+    console.log(data);
+
+    const response = await this.userRepository.query(
+      `SELECT * FROM users WHERE username = '${data}' OR email = '${data}' OR "active" = true LIMIT 1`,
+    );
 
     if (!response) {
       throw new DataException('Sem usuário cadastrado !');
     }
-    return response;
+    return response[0];
   }
 
   async findOneByEmail(email: string) {
