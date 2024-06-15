@@ -37,7 +37,6 @@ export class ContactService {
   }
 
   async findAll(request: any) {
-    // console.log(request);
     return await this.contactRepository
       .createQueryBuilder()
       .select()

@@ -33,8 +33,6 @@ export class UserService {
   }
 
   async findOneByUsername(data: string) {
-    console.log(data);
-
     const response = await this.userRepository.query(
       `SELECT * FROM users WHERE username = '${data}' OR email = '${data}' OR "active" = true LIMIT 1`,
     );
