@@ -46,7 +46,6 @@ export class PlansController {
       throw new DataException(error.message);
     }
   }
-  
 
   @Get()
   async findAll() {

@@ -26,13 +26,17 @@ export class PlansService {
     return data;
   }
 
-  async buildBenefit(createBenefitsDto: CreateBenefitDto[]): Promise<BenefitEntity[]> {
+  async buildBenefit(
+    createBenefitsDto: CreateBenefitDto[],
+  ): Promise<BenefitEntity[]> {
     const benefits: BenefitEntity[] = [];
     for (const benefitDto of createBenefitsDto) {
       benefitDto.createdAt = new Date(Date.now());
       benefitDto.updatedAt = new Date(Date.now());
 
-      let benefit = await this.benefitRepository.findOne({ where: { title: benefitDto.title } });
+      let benefit = await this.benefitRepository.findOne({
+        where: { title: benefitDto.title },
+      });
 
       if (!benefit) {
         benefit = await this.benefitRepository.save(benefitDto);
@@ -45,7 +49,9 @@ export class PlansService {
   }
 
   async findAll() {
-    const data = await this.planRepository.find({ relations:{benefits: true} });
+    const data = await this.planRepository.find({
+      relations: { benefits: true },
+    });
     if (data.length === 0) {
       throw new DataException('Sem planos cadastrados');
     }
@@ -53,7 +59,10 @@ export class PlansService {
   }
 
   async findOne(id: number) {
-    const data = await this.planRepository.find({ where: { id }, relations:{benefits: true} });
+    const data = await this.planRepository.find({
+      where: { id },
+      relations: { benefits: true },
+    });
     if (data.length === 0) {
       throw new DataException('Plano não cadastrado');
     }
@@ -64,10 +73,9 @@ export class PlansService {
     updatePlanDto.id = id;
     updatePlanDto.benefits = await this.buildBenefit(updatePlanDto.benefits);
     updatePlanDto.updatedAt = new Date(Date.now());
-    const data = await this.planRepository.save({...updatePlanDto});
+    const data = await this.planRepository.save({ ...updatePlanDto });
     return data;
   }
-
 
   async remove(id: number) {
     const plan = await this.findOne(id);
@@ -75,7 +83,7 @@ export class PlansService {
     if (!plan) {
       throw new DataException('Plano não cadastrado!');
     }
-    
+
     return this.planRepository.delete({ id });
   }
 

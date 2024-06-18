@@ -21,7 +21,7 @@ export const TypeORMSqliteTestingModule = () => [
       UserEntity,
       FaqEntity,
       PlanEntity,
-      BenefitEntity
+      BenefitEntity,
     ],
   }),
   TypeOrmModule.forFeature([
@@ -30,6 +30,6 @@ export const TypeORMSqliteTestingModule = () => [
     ResponseContactEntity,
     FaqEntity,
     PlanEntity,
-    BenefitEntity
+    BenefitEntity,
   ]),
 ];
