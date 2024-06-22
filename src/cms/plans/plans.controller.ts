@@ -89,9 +89,9 @@ export class PlansController {
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: number) {
     try {
-      const data = await this.plansService.remove(+id);
+      const data = await this.plansService.remove(id);
       return {
         message: 'Plano deletado com sucesso !',
         data,

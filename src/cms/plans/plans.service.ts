@@ -26,6 +26,13 @@ export class PlansService {
     return data;
   }
 
+  async createBenefit(createBenefitDto: CreateBenefitDto) {
+    createBenefitDto.createdAt = new Date(Date.now());
+    createBenefitDto.updatedAt = new Date(Date.now());
+    const data = await this.benefitRepository.save({ ...createBenefitDto });
+    return data;
+  }
+
   async buildBenefit(
     createBenefitsDto: CreateBenefitDto[],
   ): Promise<BenefitEntity[]> {
@@ -87,10 +94,4 @@ export class PlansService {
     return this.planRepository.delete({ id });
   }
 
-  async createBenefit(createBenefitDto: CreateBenefitDto) {
-    createBenefitDto.createdAt = new Date(Date.now());
-    createBenefitDto.updatedAt = new Date(Date.now());
-    const data = await this.benefitRepository.save({ ...createBenefitDto });
-    return data;
-  }
 }
