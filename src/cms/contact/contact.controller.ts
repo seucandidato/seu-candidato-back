@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Param, UseGuards, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Get,
+  Request,
+} from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { DataException } from '../../services/exceptions/data.exception';
@@ -12,9 +20,9 @@ export class ContactController {
 
   @Post()
   @UseGuards(AuthGuard)
-  async create(@Body() createContactDto: CreateContactDto) {
+  async create(@Body() createContactDto: CreateContactDto, @Request() user) {
     try {
-      const data = await this.contactService.create(createContactDto);
+      const data = await this.contactService.create(createContactDto, user);
       return {
         message: 'Contato criado com sucesso !',
         data,
@@ -44,18 +52,27 @@ export class ContactController {
   }
 
   @Get()
-  findAll() {
+  @UseGuards(AuthGuard)
+  async findAll(@Request() user) {
     try {
-      return this.contactService.findAll();
+      const data = await this.contactService.findAll(user);
+      return {
+        message: 'Contatos buscados com sucesso !',
+        data,
+      };
     } catch (error: any) {
       throw new DataException(error.message);
     }
   }
 
   @Get('findResponse/:id')
-  findResponse(@Param('id') id: number) {
+  async findResponse(@Param('id') id: number) {
     try {
-      return this.contactService.findResponseContact(id);
+      const data = await this.contactService.findResponseContact(id);
+      return {
+        message: 'Respostas de contato buscados com sucesso !',
+        data,
+      };
     } catch (error: any) {
       throw new DataException(error.message);
     }

@@ -15,9 +15,10 @@ export class ContactService {
     private responseContactRepository: Repository<ResponseContactEntity>,
   ) {}
 
-  async create(createContactDto: CreateContactDto) {
+  async create(createContactDto: CreateContactDto, request: any) {
     createContactDto.createdAt = new Date(Date.now());
     createContactDto.updatedAt = new Date(Date.now());
+    createContactDto.user = request['user'].id;
     const data = await this.contactRepository.save({ ...createContactDto });
     return data;
   }
@@ -35,9 +36,14 @@ export class ContactService {
     return data;
   }
 
-  async findAll() {
-    return await this.contactRepository.find();
+  async findAll(request: any) {
+    return await this.contactRepository
+      .createQueryBuilder()
+      .select()
+      .where({ user: request['user'].id })
+      .getMany();
   }
+
   async findResponseContact(id: number) {
     return await this.responseContactRepository.query(
       `SELECT * FROM response_contact where contactId=${id}`,

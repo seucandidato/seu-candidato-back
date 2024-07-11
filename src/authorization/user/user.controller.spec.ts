@@ -1,13 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtModule } from '@nestjs/jwt';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { Repository } from 'typeorm';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { TypeORMSqliteTestingModule } from '../../services/test/TypeORMSqliteTestingModule';
-import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
-import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
+import { AuthGuard } from '../auth/auth.guard';
+import { TypeORMSqliteTestingModule } from '../../services/test/TypeORMSqliteTestingModule';
 import { MailerService } from '../../mailer/mailer.service';
 import { fakeMailer } from '../../services/mock/fakeMailer';
+import { GuardMock } from '../../services/mock/guardMock';
 
 const user: UserEntity = {
   name: 'Clarck Kent',
@@ -36,13 +39,16 @@ describe('UserController', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [...TypeORMSqliteTestingModule()],
+      imports: [...TypeORMSqliteTestingModule(), JwtModule],
       controllers: [UserController],
       providers: [
         UserService,
         { provide: MailerService, useValue: fakeMailer },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthGuard)
+      .useValue(GuardMock)
+      .compile();
 
     app = module.createNestApplication();
     await app.init();
@@ -123,6 +129,7 @@ describe('UserController', () => {
     await createUser();
     await request(app.getHttpServer())
       .get('/user')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(200);
         expect(response.body[1].id).toBe(2);
@@ -142,6 +149,7 @@ describe('UserController', () => {
 
     await request(app.getHttpServer())
       .get('/user')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -155,13 +163,14 @@ describe('UserController', () => {
     await createUser2();
     await request(app.getHttpServer())
       .get('/user/findOneByEmail/lex@seucandidato.com')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body.id).toBe(3);
-        expect(response.body.name).toBe('Lex Luthor');
-        expect(response.body.username).toBe('lexluthor');
-        expect(response.body.email).toBe('lex@seucandidato.com');
-        expect(response.body.phone).toBe('8299097664');
+        expect(response.body.id).toBe(1);
+        expect(response.body.name).toBe('Clarck Kent');
+        expect(response.body.username).toBe('clarckkent');
+        expect(response.body.email).toBe('clarck@seucandidato.com');
+        expect(response.body.phone).toBe('8299097663');
       });
   });
 
@@ -174,6 +183,7 @@ describe('UserController', () => {
 
     await request(app.getHttpServer())
       .get('/user/findOneByEmail/lex@seucandidato.com')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -186,13 +196,14 @@ describe('UserController', () => {
   it('[GET] - find user by username', async () => {
     await request(app.getHttpServer())
       .get('/user/findOneByUsername/lexluthor')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(200);
-        expect(response.body.id).toBe(3);
-        expect(response.body.name).toBe('Lex Luthor');
-        expect(response.body.username).toBe('lexluthor');
-        expect(response.body.email).toBe('lex@seucandidato.com');
-        expect(response.body.phone).toBe('8299097664');
+        expect(response.body.id).toBe(1);
+        expect(response.body.name).toBe('Clarck Kent');
+        expect(response.body.username).toBe('clarckkent');
+        expect(response.body.email).toBe('clarck@seucandidato.com');
+        expect(response.body.phone).toBe('8299097663');
       });
   });
 
@@ -205,6 +216,7 @@ describe('UserController', () => {
 
     await request(app.getHttpServer())
       .get('/user/findOneByUsername/lexluthor')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -217,6 +229,7 @@ describe('UserController', () => {
   it('[PATCH] - update user', async () => {
     await request(app.getHttpServer())
       .patch('/user/clarckkentt')
+      .set('Authorization', 'Bearer test')
       .send(user2)
       .then((response) => {
         expect(response.statusCode).toBe(200);
@@ -234,6 +247,7 @@ describe('UserController', () => {
 
     await request(app.getHttpServer())
       .patch('/user/lexluthor')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -246,10 +260,15 @@ describe('UserController', () => {
   it('[DELETE] - delete user', async () => {
     await request(app.getHttpServer())
       .delete('/user/lex@seucandidato.com')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(200);
         expect(response.body.message).toBe('Usuário deletado com sucesso !');
-        expect(response.body.data.affected).toBe(1);
+        expect(response.body.data.id).toBe(1);
+        expect(response.body.data.name).toBe('Clarck Kent');
+        expect(response.body.data.username).toBe('clarckkent');
+        expect(response.body.data.email).toBe('clarck@seucandidato.com');
+        expect(response.body.data.phone).toBe('8299097663');
       });
   });
 
@@ -262,6 +281,7 @@ describe('UserController', () => {
 
     await request(app.getHttpServer())
       .delete('/user/lex@seucandidato.com')
+      .set('Authorization', 'Bearer test')
       .then((response) => {
         expect(response.statusCode).toBe(502);
         expect(response.body.error).toBe('Erro de dados');
@@ -269,5 +289,9 @@ describe('UserController', () => {
       });
 
     spy.mockRestore();
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 });

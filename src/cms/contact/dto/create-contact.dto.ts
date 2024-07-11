@@ -1,5 +1,7 @@
 import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator';
 import { ResponseContactEntity } from '../entities/response-contact.entity';
+import { UserEntity } from '../../../authorization/user/entities/user.entity';
+import { Type } from 'class-transformer';
 
 export class CreateContactDto {
   @IsOptional()
@@ -20,6 +22,9 @@ export class CreateContactDto {
   @IsBoolean()
   @IsOptional()
   active?: boolean;
+
+  @Type(() => UserEntity)
+  user: UserEntity;
 
   @IsOptional()
   response?: ResponseContactEntity[];

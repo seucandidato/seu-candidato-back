@@ -26,6 +26,10 @@ export class CreateUserDto {
   @IsOptional()
   active?: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  checked?: boolean;
+
   @IsString()
   @IsOptional()
   hash?: string;
