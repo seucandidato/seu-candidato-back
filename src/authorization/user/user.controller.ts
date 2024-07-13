@@ -29,6 +29,7 @@ export class UserController {
       const data = await this.userService.create(createUserDto);
       const bodyMailer: sendMailInterface = {
         to: data.email,
+        from: 'No-Reply SeuCandidato.com <no-reply@seucandidato.com>',
         subject: 'Confirmação de email - SeuCandidato.com',
         content: `
         Email enviado automaticamente \n

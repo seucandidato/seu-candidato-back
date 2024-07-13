@@ -22,7 +22,7 @@ export class MailerService {
   async sendMail(body: sendMailInterface) {
     try {
       const info = await this.transporter.sendMail({
-        from: 'No-Reply SeuCandidato.com <no-reply@seucandidato.com>',
+        from: body.from,
         to: body.to,
         subject: body.subject,
         text: body.content,

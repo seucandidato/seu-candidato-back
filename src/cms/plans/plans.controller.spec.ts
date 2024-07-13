@@ -10,7 +10,6 @@ import { TypeORMSqliteTestingModule } from '../../services/test/TypeORMSqliteTes
 import { AuthGuard } from '../../authorization/auth/auth.guard';
 import { GuardMock } from '../../services/mock/guardMock';
 import { BenefitEntity } from './entities/benefits.entity';
-import { title } from 'process';
 
 const plan: PlanEntity = {
   title: 'Plus',
@@ -19,7 +18,7 @@ const plan: PlanEntity = {
 };
 
 const benefits: BenefitEntity = {
-    title: 'Premium'
+  title: 'Premium',
 };
 
 describe('PlansController', () => {
@@ -53,12 +52,11 @@ describe('PlansController', () => {
         title: 'Benefício 1',
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
-      }
+      },
     ];
-  
+
     return await benefitRepository.save(benefits);
   };
-
 
   const createPlan = async () => {
     const benefits = await createBenefits();
@@ -67,9 +65,9 @@ describe('PlansController', () => {
       price: 99.99,
       createdAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
-      benefits: benefits,  
+      benefits: benefits,
     };
-  
+
     return await planRepository.save(plan);
   };
 
@@ -91,7 +89,6 @@ describe('PlansController', () => {
       });
   });
 
-  
   it('[POST] - should not create plan', async () => {
     const spy = jest
       .spyOn(PlansService.prototype, 'create')
@@ -235,7 +232,6 @@ describe('PlansController', () => {
         expect(response.body.data.affected).toBeUndefined();
       });
   });
-
 
   it('[PATCH] - not update plan', async () => {
     const spy = jest

@@ -93,5 +93,4 @@ export class PlansService {
 
     return this.planRepository.delete({ id });
   }
-
 }
